@@ -1,0 +1,25 @@
+CREATE TABLE Goals (
+    GoalId STRING(36) NOT NULL,
+    UserId STRING(36) NOT NULL,
+    Name STRING(128) NOT NULL,
+    Description STRING(1024),
+    Status STRING(16) NOT NULL,
+    CreatedAt TIMESTAMP NOT NULL,
+    UpdatedAt TIMESTAMP NOT NULL,
+) PRIMARY KEY (GoalId);
+
+CREATE INDEX GoalsByUserIdCreatedAt ON Goals(UserId, CreatedAt);
+
+CREATE TABLE Tasks (
+    GoalId STRING(36) NOT NULL,
+    TaskId STRING(36) NOT NULL,
+    UserId STRING(36) NOT NULL,
+    Name STRING(128) NOT NULL,
+    Description STRING(1024),
+    Status STRING(16) NOT NULL,
+    CreatedAt TIMESTAMP NOT NULL,
+    UpdatedAt TIMESTAMP NOT NULL,
+) PRIMARY KEY (GoalId, TaskId),
+INTERLEAVE IN PARENT Goals ON DELETE CASCADE;
+
+CREATE INDEX TasksByUserIdGoalId ON Tasks(UserId, GoalId);
